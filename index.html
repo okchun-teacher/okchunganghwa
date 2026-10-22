@@ -506,6 +506,50 @@ textarea{width:100%;min-height:240px;resize:vertical;background:#f7ecc8;color:va
 .bdlg h2,.sbc .sbarena{margin-right:0}
 .bdlg h2{padding-right:96px}
 
+/* 문장 만들기 */
+.ordk{font-size:30px}
+@media (max-width:520px){.ordk{font-size:24px}}
+.ordline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-height:64px;margin:12px 0;padding:10px;background:rgba(40,20,8,.12);border:2px dashed #7a5528;border-radius:6px}
+.ordline.ok{border-style:solid;border-color:#2e7d4f;background:rgba(80,170,110,.18)}
+.ordline.no{border-style:solid;border-color:#9a3a2a;background:rgba(200,80,60,.14)}
+.ordph{color:var(--ink2);opacity:.6;font-weight:700;font-size:15px}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px;padding:10px 0;border-top:2px solid rgba(74,47,20,.25)}
+.ordw{font:inherit;font-family:var(--lat);font-size:19px;font-weight:800;padding:8px 14px;min-height:44px;background:var(--noise),linear-gradient(#f3e6bf,#e2cd96);color:var(--ink);border:2px solid #4a2f14;border-radius:4px;box-shadow:inset 0 0 10px rgba(120,80,30,.4),0 3px 0 #1b0f06;cursor:pointer}
+.ordw.ordon{background:linear-gradient(#fff3c8,#f0d98a)}
+.ordw.used{background:rgba(60,35,12,.10);color:transparent;border:2px dashed rgba(74,47,20,.28);box-shadow:none;cursor:default}
+.ordw:active:not(:disabled){transform:translateY(2px);box-shadow:inset 0 0 10px rgba(120,80,30,.4),0 1px 0 #1b0f06}
+.ordrow{display:flex;gap:10px;align-items:stretch}
+.ordgo{flex:1}
+.ordrow .btn{flex:0 0 36%;margin:0}
+.ordrow .ordgo{flex:1 1 0;min-width:0;margin:0}
+.ordgo .big{white-space:nowrap;word-break:keep-all}
+
+/* 짝 맞추기 */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.mcol{display:flex;flex-direction:column;gap:9px}
+.mt{font:inherit;font-weight:800;font-size:18px;min-height:52px;padding:8px 10px;text-align:center;overflow-wrap:anywhere;background:var(--noise),linear-gradient(#f3e6bf,#e2cd96);color:var(--ink);border:2px solid #4a2f14;border-radius:4px;box-shadow:inset 0 0 10px rgba(120,80,30,.4),0 3px 0 #1b0f06;cursor:pointer;transition:transform .08s}
+.mtl{font-family:var(--lat)}
+.mt:active:not(:disabled){transform:translateY(2px)}
+.mt.msel{background:linear-gradient(#ffe9a0,#f3c95a);border-color:#b5121b;box-shadow:0 0 0 3px rgba(181,18,27,.35),0 3px 0 #1b0f06}
+.mt.mdone{background:linear-gradient(#cfe8c4,#a9d19a);color:#2c5a2e;border-color:#3f7a45;opacity:.55;box-shadow:none;cursor:default}
+.mt.mbad{background:linear-gradient(#f4c3b8,#e59a8a);border-color:#9a3a2a;animation:mshake .35s}
+@keyframes mshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.mt.mbad{animation:none}}
+
+/* 글자 타일 */
+.tline{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0;padding:10px;background:rgba(40,20,8,.10);border:2px dashed #7a5528;border-radius:6px;min-height:68px}
+.tline.ok{border-style:solid;border-color:#2e7d4f;background:rgba(80,170,110,.18)}
+.tline.no{border-style:solid;border-color:#9a3a2a;background:rgba(200,80,60,.14)}
+.tl{width:44px;height:50px;font:inherit;font-family:var(--lat);font-size:26px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;padding:0;border:2px solid #4a2f14;border-radius:4px;background:var(--noise),linear-gradient(#f3e6bf,#e2cd96);color:var(--ink);box-shadow:inset 0 0 10px rgba(120,80,30,.4),0 3px 0 #1b0f06;cursor:pointer}
+.tl.on{background:linear-gradient(#fff3c8,#f0d98a)}
+.tl.slot{background:transparent;border:2px dashed rgba(74,47,20,.4);box-shadow:none;cursor:default}
+.tl.used{background:rgba(60,35,12,.10);color:transparent;border:2px dashed rgba(74,47,20,.28);box-shadow:none;cursor:default}
+.tl:active:not(:disabled):not(.slot){transform:translateY(2px)}
+.tbank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 12px;padding:10px 0;border-top:2px solid rgba(74,47,20,.25)}
+@media (max-width:520px){.tl{width:38px;height:46px;font-size:23px}}
+
+.ordw.ordgap{min-width:58px;visibility:visible;background:transparent;border:2px dashed rgba(74,47,20,.4);box-shadow:none;cursor:default;color:transparent}
+
 .sword-box canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .sword-box #swordHolder{position:absolute;inset:0;z-index:3;display:flex;align-items:flex-end;justify-content:center;padding-bottom:65.6cqw}
 .sword-box .swd{--h:70cqw;margin-bottom:calc(var(--h)*var(--sc)*var(--ws,1)*-.085)}
@@ -670,6 +714,8 @@ textarea{width:100%;min-height:240px;resize:vertical;background:#f7ecc8;color:va
           <p class="note" id="itemStock" style="margin-top:6px;font-size:12px"></p>
           <p class="note" id="appNote" style="margin-top:12px"></p>
           <button class="btn" id="btnApp" type="button" style="width:100%">도제 고용</button>
+          <p class="note" id="capNote" style="margin-top:12px"></p>
+          <button class="btn" id="btnCap" type="button" style="width:100%">강화권 보관함 넓히기</button>
         </div>
       </div>
     </div>
@@ -740,7 +786,7 @@ textarea{width:100%;min-height:240px;resize:vertical;background:#f7ecc8;color:va
     <span><button id="btnReset" type="button">기록 초기화</button></span>
   </div>
   <p class="credits">배경음악 · The Medieval Banquet (Silverman Sound Studios) · Battle Of The Creek (Alexander Nakarada) · Beat (Cloudy day) · Breaking the Siege (Arthur Vyncke) · Dragon Castle (Makai Symphony)</p>
-  <p class="credits ver">단어의 대장간 · 버전 2026.10.20c</p>
+  <p class="credits ver">단어의 대장간 · 버전 2026.10.22a</p>
 </div>
 
 <div class="modal award" id="award" role="dialog" aria-modal="true" aria-labelledby="awName" hidden>
@@ -857,7 +903,7 @@ var BASE=[98,96,94,92,90,88,86,84,78,72,66,60,54,48,43,38,33,28,23,18,10,6];
 /* +21∼+22 초월 영역: 봉헌한 사람만 · 하락/파괴 확률이 매우 높음 */
 var MAXL=22,F21=1,F22=3,TDROP=[.6,.7],TDEST=[.3,.4];
 function tf(){var t=TMAP[S.title];return t?t.fx:{}}
-var MAXCH=5,TPRICE=300,PITY=6,PITYMAX=36,GOLDQ=.12,DROPFROM=8,DROPP=.5,TYPEMULT=2;
+var MAXCH=5,CAPMAX=5,CAPP=[1500,3000,6000,12000,24000],TPRICE=300,PITY=6,PITYMAX=36,GOLDQ=.12,DROPFROM=8,DROPP=.5,TYPEMULT=2;
 var NAMES=['낡은 철검','단단한 철검','잘 벼린 강철검','청동 장검','곧은 기사검','숙련자의 강철검','은빛 검','푸른 날의 검','불꽃 검','서리 검','번개 검','폭풍 검','용비늘 검','달빛 검','별빛 검','태양 검','심연의 검','천공의 검','영웅의 검','전설의 검','신화의 검 엑스칼리버'];
 var FLAVOR=['아직 아무런 전설도 깃들지 않았다.','날이 조금씩 반짝이기 시작했다.','쇠 냄새가 가시고 제법 단단해졌다.','청동빛 날에 힘이 모인다.','곧은 검날에 믿음이 간다.','숙련된 대장장이의 손길이 느껴진다.','푸른 은빛이 날을 따라 흐른다.','휘두르면 바람이 갈라진다.','검 끝에서 작은 불꽃이 튄다.','서리가 내려앉은 듯 차갑게 빛난다.','번개의 기운이 검신을 감싼다.','폭풍을 부르는 검이라 불린다.','용의 비늘처럼 단단한 날이다.','달빛을 머금어 어둠 속에서도 빛난다.','별빛이 검 위로 흘러내린다.','태양의 열기가 검에 깃들었다.','깊은 심연에서 울리는 소리가 난다.','하늘을 가를 듯한 기운이 퍼진다.','영웅들의 이야기가 검에 새겨졌다.','이름만 들어도 모두가 아는 전설의 검.','신화가 완성되었다. 더 이상 벼릴 수 없다.'];
 var WEAPONS=['sword','spear','axe','hammer','wand','bow'];
@@ -964,7 +1010,7 @@ S.st=Object.assign({},ST0,S.st);S.dboss=Object.assign({day:'',claimed:0,wins:0,t
 S.weapon=S.weapon||'sword';S.seenW=S.seenW||{};WEAPONS.forEach(function(w){S.seenW[w]=S.seenW[w]||{}});
 if(o&&o.v===2&&!o.seenW)S.seenW.sword=Object.assign({0:true},o.seen||{});
 S.bestW=S.bestW||{};WEAPONS.forEach(function(w){if(S.bestW[w]==null)S.bestW[w]=(w==='sword'?(S.best||0):0)});S.hall=S.hall||[];
-S.st=Object.assign({},ST0,S.st||{});S.titles=S.titles||{};S.ms=S.ms||{};S.dstreak=S.dstreak||{last:'',n:0};
+S.st=Object.assign({},ST0,S.st||{});S.titles=S.titles||{};S.cap=Math.max(0,Math.min(5,S.cap|0));S.ms=S.ms||{};S.dstreak=S.dstreak||{last:'',n:0};
 if(o&&o.hammer&&!o.charge)S.charge=1;
 delete S.hammer;
 var DIFF={easy:{name:'쉬움',n:3,en:.8,mult:1,type:0},normal:{name:'보통',n:4,en:.5,mult:1.2,type:0},hard:{name:'어려움',n:5,en:.3,mult:1.6,type:.7},extreme:{name:'EXTREME',n:5,en:.25,mult:2,type:.85}};
@@ -1044,7 +1090,7 @@ var catPreview=/[#&]cat\b/.test(location.hash||'');
 function catUnlocked(){return catPreview||!!(S.ms&&S.ms.m_cat)}
 function catShown(){return catUnlocked()&&S.catOn!==false}
 function catSay(txt){var b=$('catBub');if(!b)return;b.textContent=txt;b.classList.remove('show');void b.offsetWidth;b.classList.add('show')}
-function sfx(k){
+function sfx(k,n){
   if(!S.sfx)return;
   if(k==='right'){tone(660,.14,'triangle');tone(880,.22,'triangle',.12,.1)}
   else if(k==='wrong'){tone(190,.3,'sawtooth',.07)}
@@ -1067,6 +1113,10 @@ function sfx(k){
     [2200,1760,1480,1180,990].forEach(function(f,i){tone(f,.35,'triangle',.05,.25+i*.09)});nz(.8,.1,'bandpass',4200,.35,2,1.4)}
   else if(k==='fanfare'){[392,523,659,784,1047,1319].forEach(function(f,i){tone(f,.34,'triangle',.08,i*.09)});tone(262,.9,'sawtooth',.03,.05);tone(523,.9,'sine',.05,.5)}
   else if(k==='coin'){tone(988,.08,'square',.05);tone(1319,.18,'square',.05,.07)}
+  else if(k==='pick'){tone(480+Math.min(n||0,9)*45,.07,'triangle',.07);nz(.05,.10,'bandpass',2200,0,2.2,2)}
+  else if(k==='unpick'){tone(300,.07,'triangle',.05);nz(.04,.06,'bandpass',1400,0,2,2)}
+  else if(k==='match'){bell(1046.5,.4,.07);tone(1568,.14,'triangle',.04,.06)}
+  else if(k==='nomatch'){tone(220,.16,'square',.035);tone(170,.2,'square',.035,.08)}
 }
 var SCALE=[146.8,164.8,174.6,196,220,246.9,261.6,293.7];
 var SEQ=[0,2,4,2,3,2,1,0, 0,2,4,5,4,3,2,1];
@@ -1215,7 +1265,12 @@ function pickWord(){
 }
 function newQuestion(){
   if(WL().length<4){Q=null;return}
-  var c=cfg(),idx=pickWord();S.lastIdx=idx;var gq=Math.random()<GOLDQ+(tf().gq||0);
+  var c=cfg(),idx=pickWord();S.lastIdx=idx;
+  if(S.mode==='auto'||S.mode==='mix'){var rr=Math.random();
+    if(rr<ORDP){var oq=orderQ();if(oq){oq.idx=idx;Q=oq;return}}
+    else if(rr<ORDP+MATCHP){var mq=matchQ(idx);if(mq){Q=mq;return}}
+    else if(rr<ORDP+MATCHP+TILEP){var tq=tilesQ(idx);if(tq){Q=tq;return}}}
+  var gq=Math.random()<GOLDQ+(tf().gq||0);
   var dir=S.mode==='auto'?(Math.random()<c.en?'en2ko':'ko2en'):S.mode==='mix'?(Math.random()<.5?'en2ko':'ko2en'):S.mode;
   var w=WL()[idx];
   if(dir==='ko2en'&&c.type>0&&TYPABLE.test(w.en)&&Math.random()<c.type){
@@ -1236,6 +1291,179 @@ function newQuestion(){
   Q={idx:idx,dir:dir,typed:false,opts:shuffle([ans].concat(pool)),ans:ans,done:false,pick:-1,ok:false,golden:gq};
   Q.right=Q.opts.indexOf(ans);
 }
+/* ---------- 문장 만들기 (어순 배열) ---------- */
+var ORDP=.13,MATCHP=.10,TILEP=.10,MATCHM=3,TILEM=1.6;
+function nFill(q){var c=0;q.line.forEach(function(x){if(x>=0)c++});return c}
+function emptyLine(n){var a=[];for(var i=0;i<n;i++)a.push(-1);return a}
+function chMax(){return MAXCH+(S.cap|0)}
+function addCharge(n){var b=S.charge;S.charge=Math.min(chMax(),b+n);return S.charge-b}
+function chTxt(n,got){return (got>1?' · 강화권 +'+got:'')+(got<n?' · 강화권이 가득 찼어요':'')}
+function ordMult(n){return Math.min(3,Math.max(1.8,.5+.3*n))}
+function ordToks(x){
+  var t=x.s.replace('___',x.a).replace(/\s+([,.!?;:])/g,'$1').trim().split(/\s+/);
+  t[0]=t[0].charAt(0).toUpperCase()+t[0].slice(1);return t;
+}
+function orderQ(){
+  var pool=sbPool().filter(function(x){var n=ordToks(x).length;return x.k&&n>=4&&n<=9});
+  if(pool.length<5)return null;
+  var x=pool[rnd(pool.length)],t=ordToks(x),ids=t.map(function(v,i){return i}),sh=ids;
+  for(var n=0;n<10;n++){sh=shuffle(ids.slice());if(sh.some(function(v,i){return t[v]!==t[i]}))break}
+  return{kind:'order',sent:x,ans:t,bank:sh.map(function(i){return{w:t[i],used:false}}),line:emptyLine(t.length),done:false,ok:false,golden:false,idx:0,typed:false,opts:[]};
+}
+function orderCheck(){return Q.line.map(function(i){return i<0?'':Q.bank[i].w}).join(' ')===Q.ans.join(' ')}
+function renderSO(box){
+  var h='<div class="qtype">🧩 문장 만들기 · 단어를 눌러 알맞은 순서로 놓으세요 · 보상 ×'+ordMult(Q.bank.length).toFixed(1)+' · 강화권 '+(Q.bank.length<=5?2:3)+'장</div>';
+  h+='<div class="prompt ordk">'+esc(Q.sent.k)+'</div>';
+  h+='<div class="ordline'+(Q.done?(Q.ok?' ok':' no'):'')+'" id="ordLine">';
+  Q.line.forEach(function(bi,k){if(bi>=0)h+='<button type="button" class="ordw ordon" data-l="'+k+'"'+(Q.done?' disabled':'')+'>'+esc(Q.bank[bi].w)+'</button>';else h+='<span class="ordw ordgap"></span>'});
+  h+='</div><div class="ordbank">';
+  Q.bank.forEach(function(b,i){h+='<button type="button" class="ordw'+(b.used?' used':'')+'" data-b="'+i+'"'+(b.used||Q.done?' disabled':'')+'>'+esc(b.w)+'</button>'});
+  h+='</div>';
+  if(!Q.done){
+    var full=nFill(Q)===Q.bank.length;
+    h+='<div class="row ordrow"><button class="btn" type="button" id="ordClear"'+(nFill(Q)?'':' disabled')+'>지우기</button><button class="enh ordgo" type="button" id="ordGo"'+(full?'':' disabled')+'><span class="big">확인</span></button></div>';
+    h+='<div class="fb idle">단어를 모두 놓으면 확인을 누를 수 있어요. 잘못 놓은 단어만 눌러 빼고 그 자리에 다시 놓을 수 있어요.</div>';
+  }else{
+    h+='<div class="fb '+(Q.ok?'ok':'no')+'"><b>'+(Q.ok?'정답입니다! '+(Q.gainTxt||''):'아쉬워요.')+'</b> '+esc(Q.ans.join(' '))+(Q.ok?'':' (정답 문장이에요)')+'</div>';
+    if(!Q.ok&&studyLeft()>0)h+='<div class="study"><i id="studyBar" style="width:'+Math.round(studyLeft()/STUDY_MS*100)+'%"></i><span id="studyTxt">🔥 정답 문장을 읽어 보세요</span></div>';
+  }
+  box.innerHTML=h;
+  $('btnSkip').hidden=Q.done;$('btnNext').hidden=!Q.done;$('btnNext').disabled=!!(Q.done&&!Q.ok&&studyLeft()>0);
+  $('quizCard').classList.remove('goldq');
+  $('todo').innerHTML=S.charge>0?'지금 할 일: <b>강화권 '+S.charge+'장</b>으로 강화하거나 문제를 더 풀어 모으세요.':'지금 할 일: <b>단어를 순서대로 놓아</b> 문장을 완성하세요.';
+  $('needNote').textContent='연속 정답 '+S.streak+' · 5연속마다 보너스';
+}
+function orderClick(e){
+  var b=e.target.closest('[data-b]'),l=e.target.closest('[data-l]');
+  if(b){var i=+b.getAttribute('data-b');var z=Q.line.indexOf(-1);if(!Q.bank[i].used&&z>=0){Q.bank[i].used=true;Q.line[z]=i;sfx('pick',nFill(Q));renderQuiz()}return}
+  if(l){var k=+l.getAttribute('data-l'),bi=Q.line[k];if(bi>=0){Q.bank[bi].used=false;Q.line[k]=-1}sfx('unpick');renderQuiz();return}
+  if(e.target.closest('#ordClear')){Q.bank.forEach(function(b){b.used=false});Q.line=emptyLine(Q.bank.length);sfx('unpick');renderQuiz();return}
+  if(e.target.closest('#ordGo')){if(nFill(Q)!==Q.bank.length)return;Q.done=true;Q.ok=orderCheck();finishOrder(Q.ok)}
+}
+function finishOrder(ok){
+  var thisQ=Q,full=Q.ans.join(' ');
+  if(ok){
+    S.wrongRun=0;S.recentWrong=[];S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;S.st.ord=(S.st.ord||0)+1;
+    var base=20+Math.min(S.streak,10)*2+S.app*4,om=ordMult(Q.bank.length),m=(has('hammer')?1.3:1)*cfg().mult*om*(tf().rm||1)*fameBonus();
+    var gain=Math.round(base*m)+(tf().gp||0),extra=['문장 ×'+om.toFixed(1)];
+    if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}
+    var cgn=Q.bank.length<=5?2:3;S.gold+=gain;var fullc=addCharge(cgn);sfx('right');
+    Q.gainTxt='+'+fmt(gain)+' G ('+extra.join(' · ')+')'+chTxt(cgn,fullc);
+    addLog('정답! 골드 +'+fmt(gain)+' (문장 만들기: '+full+')','s');
+    setTimeout(function(){if(Q===thisQ&&Q.done&&!busy&&$('intro').hidden&&$('award').hidden&&$('dlg').hidden){newQuestion();renderQuiz();focusTyped()}},1500);
+  }else{S.streak=0;S.st.wrong++;sfx('wrong');addLog('오답: 문장 만들기 — '+full,'f');studyStart()}
+  save();renderAll();
+}
+/* ---------- 글자 타일 스펠링 ---------- */
+function tilesQ(idx){
+  var w=WL()[idx];if(!w||!/^[A-Za-z]{3,9}$/.test(w.en))return null;
+  var t=w.en.split(''),ids=t.map(function(v,i){return i}),sh=ids;
+  for(var n=0;n<10;n++){sh=shuffle(ids.slice());if(sh.some(function(v,i){return t[v]!==t[i]}))break}
+  return{kind:'tiles',idx:idx,ans:w.en,dir:'ko2en',bank:sh.map(function(i){return{ch:t[i],used:false}}),line:emptyLine(t.length),done:false,ok:false,pick:-1,golden:false,typed:false,hint:false,opts:[]};
+}
+function tilesWord(){return Q.line.map(function(i){return i<0?'':Q.bank[i].ch}).join('')}
+function renderTiles(box){
+  var w=WL()[Q.idx],n=Q.bank.length;
+  var h='<div class="qtype">🔤 글자 타일 · 글자를 눌러 영어 단어를 완성하세요 · 보상 ×'+TILEM+' · 강화권 2장</div><div class="prompt">'+esc(w.ko)+'</div>';
+  h+='<div class="tline'+(Q.done?(Q.ok?' ok':' no'):'')+'">';
+  for(var k=0;k<n;k++){
+    if(Q.line[k]>=0)h+='<button type="button" class="tl on" data-tl="'+k+'"'+(Q.done?' disabled':'')+'>'+esc(Q.bank[Q.line[k]].ch)+'</button>';
+    else h+='<span class="tl slot"></span>';
+  }
+  h+='</div><div class="tbank">';
+  Q.bank.forEach(function(b,i){h+='<button type="button" class="tl'+(b.used?' used':'')+'" data-tb="'+i+'"'+(b.used||Q.done?' disabled':'')+'>'+esc(b.ch)+'</button>'});
+  h+='</div>';
+  if(!Q.done){
+    h+='<div class="row ordrow"><button class="btn" type="button" id="tClear"'+(nFill(Q)?'':' disabled')+'>지우기</button><button class="enh ordgo" type="button" id="tGo"'+(nFill(Q)===n?'':' disabled')+'><span class="big">확인</span></button></div>';
+    h+='<div class="fb idle">글자를 모두 놓고 확인을 누르세요. 잘못 놓은 글자만 눌러 빼고 다시 놓을 수 있어요. 키보드로 쳐도 돼요.</div>';
+  }else{
+    var ok=Q.ok;
+    h+='<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'정답입니다! '+(Q.gainTxt||''):'아쉬워요.')+'</b> '+esc(w.en)+' = '+esc(w.ko)+(ok?'':' (오답노트에 저장됐어요)')+'</div>';
+    if(!ok&&studyLeft()>0)h+='<div class="study"><i id="studyBar" style="width:'+Math.round(studyLeft()/STUDY_MS*100)+'%"></i><span id="studyTxt">🔥 단어와 뜻을 읽어 보세요</span></div>';
+  }
+  box.innerHTML=h;
+  $('btnSkip').hidden=Q.done;$('btnNext').hidden=!Q.done;$('btnNext').disabled=!!(Q.done&&!Q.ok&&studyLeft()>0);
+  $('quizCard').classList.remove('goldq');
+  $('todo').innerHTML=S.charge>0?'지금 할 일: <b>강화권 '+S.charge+'장</b>으로 강화하거나 문제를 더 풀어 모으세요.':'지금 할 일: <b>글자를 순서대로 놓아</b> 단어를 완성하세요.';
+  $('needNote').textContent='연속 정답 '+S.streak+' · 5연속마다 보너스';
+}
+function tilesPut(i){var z=Q.line.indexOf(-1);if(Q.bank[i].used||z<0)return;Q.bank[i].used=true;Q.line[z]=i;sfx('pick',nFill(Q));renderQuiz()}
+function tilesBack(k){var bi=Q.line[k];if(bi>=0){Q.bank[bi].used=false;Q.line[k]=-1}sfx('unpick');renderQuiz()}
+function tilesSubmit(){if(nFill(Q)!==Q.bank.length)return;Q.done=true;Q.ok=typedOk(tilesWord());Q.text=tilesWord();finish(Q.ok)}
+function tilesClick(e){
+  var b=e.target.closest('[data-tb]'),l=e.target.closest('[data-tl]');
+  if(b){tilesPut(+b.getAttribute('data-tb'));return}
+  if(l){tilesBack(+l.getAttribute('data-tl'));return}
+  if(e.target.closest('#tClear')){Q.bank.forEach(function(b){b.used=false});Q.line=emptyLine(Q.bank.length);sfx('unpick');renderQuiz();return}
+  if(e.target.closest('#tGo'))tilesSubmit();
+}
+document.addEventListener('keydown',function(e){
+  if(!Q||Q.kind!=='tiles'||Q.done||busy||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.target&&/^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName))return;
+  if(!$('intro').hidden||!$('award').hidden||!$('dlg').hidden||catchOpen()||bossOpenNow()||!$('dragon').hidden||!$('sboss').hidden)return;
+  if(e.key==='Backspace'){e.preventDefault();for(var q=Q.line.length-1;q>=0;q--){if(Q.line[q]>=0){tilesBack(q);break}}return}
+  if(e.key==='Enter'){e.preventDefault();tilesSubmit();return}
+  if(/^[A-Za-z]$/.test(e.key)){var c=e.key.toLowerCase();for(var i=0;i<Q.bank.length;i++){if(!Q.bank[i].used&&Q.bank[i].ch.toLowerCase()===c){tilesPut(i);break}}}
+});
+/* ---------- 짝 맞추기 ---------- */
+function matchQ(idx){
+  var rb=rangeBounds(),pairs=[],sen={},sko={},all=shuffle(WL().map(function(x,i){return i}));
+  function add(i){var o=WL()[i];if(!o||sen[o.en.toLowerCase()]||sko[o.ko]||o.en.length>14||o.ko.length>14)return;sen[o.en.toLowerCase()]=1;sko[o.ko]=1;pairs.push({en:o.en,ko:o.ko,idx:i,done:false,err:0})}
+  add(idx);
+  all.forEach(function(i){if(pairs.length<5&&i>=rb[0]&&i<=rb[1]&&allowed(i))add(i)});
+  all.forEach(function(i){if(pairs.length<5)add(i)});
+  if(pairs.length<5)return null;
+  var ids=[0,1,2,3,4],L=shuffle(ids.slice()),R=shuffle(ids.slice());
+  for(var n=0;n<6&&R.join()===L.join();n++)R=shuffle(ids.slice());
+  return{kind:'match',pairs:pairs,L:L,R:R,selL:-1,selR:-1,bad:null,mist:0,left:5,done:false,ok:true,golden:false,idx:pairs[0].idx,typed:false,opts:[]};
+}
+function renderMatch(box){
+  var h='<div class="qtype">🔗 짝 맞추기 · 영어와 우리말 뜻을 짝지어 보세요 · 보상 ×'+MATCHM+' · 강화권 3장</div><div class="mgrid"><div class="mcol">';
+  Q.L.forEach(function(pi){var p=Q.pairs[pi],c='mt mtl'+(p.done?' mdone':'')+(Q.selL===pi?' msel':'')+(Q.bad&&Q.bad[0]===pi?' mbad':'');h+='<button type="button" class="'+c+'" data-ml="'+pi+'"'+(p.done||Q.done?' disabled':'')+'>'+esc(p.en)+'</button>'});
+  h+='</div><div class="mcol">';
+  Q.R.forEach(function(pi){var p=Q.pairs[pi],c='mt'+(p.done?' mdone':'')+(Q.selR===pi?' msel':'')+(Q.bad&&Q.bad[1]===pi?' mbad':'');h+='<button type="button" class="'+c+'" data-mr="'+pi+'"'+(p.done||Q.done?' disabled':'')+'>'+esc(p.ko)+'</button>'});
+  h+='</div></div>';
+  if(Q.done){
+    h+='<div class="fb ok"><b>'+(Q.mist===0?'완벽해요! ':'짝을 모두 맞혔어요! ')+(Q.gainTxt||'')+'</b> 실수 '+Q.mist+'번</div>';
+  }else{
+    h+='<div class="fb idle">영어와 뜻을 하나씩 눌러 짝을 맞추세요. 남은 짝 '+Q.left+'개 · 실수 '+Q.mist+'번</div>';
+  }
+  box.innerHTML=h;
+  $('btnSkip').hidden=Q.done;$('btnNext').hidden=!Q.done;$('btnNext').disabled=false;
+  $('quizCard').classList.remove('goldq');
+  $('todo').innerHTML=S.charge>0?'지금 할 일: <b>강화권 '+S.charge+'장</b>으로 강화하거나 문제를 더 풀어 모으세요.':'지금 할 일: <b>짝을 모두 맞춰</b> 강화권을 모으세요.';
+  $('needNote').textContent='연속 정답 '+S.streak+' · 5연속마다 보너스';
+}
+function matchClick(e){
+  if(Q.bad)return;
+  var l=e.target.closest('[data-ml]'),r=e.target.closest('[data-mr]');
+  if(l){var i=+l.getAttribute('data-ml');Q.selL=Q.selL===i?-1:i;sfx('pick',Q.selL<0?0:2)}
+  else if(r){var j=+r.getAttribute('data-mr');Q.selR=Q.selR===j?-1:j;sfx('pick',Q.selR<0?0:4)}
+  else return;
+  if(Q.selL>=0&&Q.selR>=0){
+    var a=Q.selL,b=Q.selR,thisQ=Q;
+    if(a===b){Q.pairs[a].done=true;Q.left--;Q.selL=Q.selR=-1;sfx('match');
+      if(Q.left===0){Q.done=true;finishMatch();return}}
+    else{Q.mist++;Q.pairs[a].err++;sfx('nomatch');Q.bad=[a,b];Q.selL=Q.selR=-1;
+      setTimeout(function(){if(Q===thisQ){Q.bad=null;renderQuiz()}},650)}
+  }
+  renderQuiz();
+}
+function finishMatch(){
+  var thisQ=Q,mi=Q.mist,fac=mi===0?1:mi<=2?.6:.3;
+  Q.pairs.forEach(function(p){var w=WL()[p.idx];if(!w)return;if(p.err===0){w.ok++;w.run++}else{w.no++;w.run=0}});
+  S.wrongRun=0;S.recentWrong=[];S.solved++;S.st.ans++;S.st.match=(S.st.match||0)+1;
+  var extra=['짝 맞추기 ×'+MATCHM+(fac<1?' · 실수 감점 ×'+fac:'')];
+  if(mi===0){S.streak++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}}
+  else if(mi>=3){S.streak=0;S.st.wrong++}
+  var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*MATCHM*fac*(tf().rm||1)*fameBonus();
+  var gain=Math.round(base*m)+(tf().gp||0);
+  var cgn=mi>=3?2:3;S.gold+=gain;var full=addCharge(cgn);sfx('right');
+  Q.gainTxt='+'+fmt(gain)+' G ('+extra.join(' · ')+')'+chTxt(cgn,full);
+  addLog('짝 맞추기 완료! 골드 +'+fmt(gain)+' (실수 '+mi+'번)','s');
+  setTimeout(function(){if(Q===thisQ&&Q.done&&!busy&&$('intro').hidden&&$('award').hidden&&$('dlg').hidden){newQuestion();renderQuiz();focusTyped()}},2200);
+  save();renderAll();
+}
 function speak(text){try{if(!window.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
 function blanksOf(ans,hint){
   return ans.split('').map(function(ch,i){return /[A-Za-z]/.test(ch)?(hint&&i===0?ch.toUpperCase():'_'):(ch===' '?'\u3000':ch)}).join(' ');
@@ -1248,6 +1476,9 @@ function renderQuiz(){
   $('tStreak').textContent='연속 정답 '+S.streak;
   $('tMode').textContent=S.mode==='auto'?'난이도 '+c.name:S.mode==='mix'?'영어↔뜻 반반':S.mode==='en2ko'?'영어 → 뜻':'뜻 → 영어';
   if(!Q){box.innerHTML='<div class="fb idle">문제를 내려면 단어가 4개 이상 필요합니다. 아래 <b>단어장</b>에서 단어를 입력해 주세요.</div>';$('btnSkip').hidden=true;$('btnNext').hidden=true;$('todo').textContent='';$('needNote').textContent='';return}
+  if(Q.kind==='order'){renderSO(box);return}
+  if(Q.kind==='match'){renderMatch(box);return}
+  if(Q.kind==='tiles'){renderTiles(box);return}
   var w=WL()[Q.idx],isEn=Q.dir==='en2ko',h='';
   h+='<div class="qtype">'+(Q.golden?'<span class="goldtag">✦ 황금 두루마리 · 보상 ×3</span> ':'')+(isEn?'영어 단어 · 알맞은 뜻을 고르세요':Q.typed?'✍ 영어 철자를 직접 써 보세요 · 보상 ×'+TYPEMULT:'우리말 뜻 · 알맞은 영어를 고르세요')+'</div>';
   h+='<div class="prompt">'+esc(isEn?w.en:w.ko)+'</div>';
@@ -1282,6 +1513,9 @@ function renderQuiz(){
 }
 $('quizBody').addEventListener('click',function(e){
   if(!Q||Q.done||busy)return;
+  if(Q.kind==='order'){orderClick(e);return}
+  if(Q.kind==='match'){matchClick(e);return}
+  if(Q.kind==='tiles'){tilesClick(e);return}
   var b=e.target.closest('.opt');if(b){answer(Number(b.getAttribute('data-i')));return}
   if(e.target.closest('#btnToType')){Q.typed=true;Q.hint=false;Q.text='';renderQuiz();focusTyped();return}
   if(e.target.closest('#btnTyped')){submitTyped();return}
@@ -1324,24 +1558,25 @@ function studyTick(){
   var l=studyLeft(),t=$('studyTxt'),b=$('studyBar'),nx=$('btnNext');
   if(b)b.style.width=Math.round(l/STUDY_MS*100)+'%';
   if(l<=0){clearInterval(studyIv);if(t)t.textContent='다 읽었으면 다음 문제로 넘어가세요';if(nx)nx.disabled=false;return}
-  if(t)t.textContent='🔥 단어와 뜻을 읽어 보세요 · '+Math.ceil(l/1000)+'초';
+  if(t)t.textContent='🔥 '+(Q&&Q.kind==='order'?'정답 문장을':'단어와 뜻을')+' 읽어 보세요 · '+Math.ceil(l/1000)+'초';
 }
 function finish(ok){
   var w=WL()[Q.idx],thisQ=Q;
   if(ok){
     S.wrongRun=0;S.recentWrong=[];if(!Q.hint&&Q.t0&&Date.now()-Q.t0<=3000)S.st.fast++;w.ok++;w.run++;S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;
-    var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*(Q.hint?.5:1)*(Q.typed?(tf().tm||TYPEMULT):1)*(Q.golden?3:1)*(tf().rm||1)*fameBonus();
+    var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*(Q.hint?.5:1)*(Q.typed?(tf().tm||TYPEMULT):1)*(Q.kind==='tiles'?TILEM:1)*(Q.golden?3:1)*(tf().rm||1)*fameBonus();
     var gain=Math.round(base*m)+(tf().gp||0),extra=[];
     if(tf().gp)extra.push('칭호 +'+tf().gp);
     if(Q.typed&&!Q.hint){S.st.typed++;S.st.tclean++;dailyAdd('typed',1)}else if(Q.typed)S.st.tclean=0;if(Q.golden){S.st.goldq++;dailyAdd('golden',1)}
     dailyAdd('ans',1);dailyAdd('streak',S.streak,true);
     if(Q.golden)extra.push('황금 ×3');
+    if(Q.kind==='tiles')extra.push('글자 타일 ×'+TILEM);
     if(Q.typed&&!Q.hint)extra.push('직접 쓰기 ×'+TYPEMULT);
     if(S.app>0)extra.push('도제 +'+(S.app*4));
     if(S.streak%5===0){var cb=Math.round((30+10*Math.min(Math.floor(S.streak/5),6))*cfg().mult*(tf().cm||1));gain+=cb;extra.push(S.streak+'연속 보너스 +'+cb);addLog(S.streak+'연속 정답! 보너스 +'+fmt(cb)+' G','g')}
     if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}
-    S.gold+=gain;var full=S.charge>=MAXCH;if(!full)S.charge++;sfx('right');
-    Q.gainTxt='+'+fmt(gain)+' G'+(extra.length?' ('+extra.join(' · ')+')':'')+(full?' · 강화권이 가득 찼어요':'');
+    var cgn=Q.kind==='tiles'?2:1;S.gold+=gain;var full=addCharge(cgn);sfx('right');
+    Q.gainTxt='+'+fmt(gain)+' G'+(extra.length?' ('+extra.join(' · ')+')':'')+chTxt(cgn,full);
     addLog('정답! 골드 +'+fmt(gain)+' ('+w.en+' = '+w.ko+')','s');
     if(w.no>0&&w.run===2)S.st.rev++;if(w.no>0&&w.run===2)addLog(w.en+' 단어를 오답노트에서 완료했어요.','g');
     setTimeout(function(){if(Q===thisQ&&Q.done&&!busy&&$('intro').hidden&&$('award').hidden&&$('dlg').hidden){newQuestion();renderQuiz();focusTyped()}},1300);
@@ -2005,6 +2240,7 @@ function sell(){
 }
 function newSword(){if(S.level!==null)return;S.level=startLv();sn()[S.level]=true;addLog('새 '+wt().name+'을(를) 만들었습니다.','g');fx('new');save();renderAll()}
 function buyApp(){var p=appPrice();if(S.app>=APPMAX||S.gold<p)return;S.gold-=p;S.app++;sfx('coin');addLog('도제를 고용했습니다. (Lv '+S.app+') 정답 보상 +'+(S.app*4),'g');save();renderAll()}
+function buyCap(){if(S.cap>=CAPMAX)return;var p=CAPP[S.cap];if(S.gold<p)return;S.gold-=p;S.cap++;sfx('coin');addLog('강화권 보관함을 넓혔습니다. (최대 '+chMax()+'개)','g');save();renderAll()}
 function buyBless(){if(S.gold<BLESS_PRICE||S.items.bless>=9||buyLeft('b')<1)return;S.gold-=BLESS_PRICE;buyMark('b');S.items.bless++;sfx('coin');addLog('축복서를 샀습니다. (사용하면 그 강화의 성공률 +'+BLESSP+'%p)','g');save();renderAll()}
 function buyShield(){if(S.gold<SHIELD_PRICE||S.items.shield>=9||buyLeft('s')<1)return;S.gold-=SHIELD_PRICE;buyMark('s');S.items.shield++;sfx('coin');addLog('가호의 수정을 샀습니다. (+8∼+'+SHIELD_MAX+'에서 단계 하락이 일어날 때 한 번 막아 줘요)','g');save();renderAll()}
 function buyTicket(){if(S.gold<tprice())return;S.gold-=tprice();S.tickets++;sfx('coin');addLog('깨짐 방지권을 샀습니다.','g');save();renderAll()}
@@ -2033,7 +2269,7 @@ function renderStage(){
     g.textContent='파괴됨';g.style.setProperty('--gc','#ff6b6b');
     $('lvl').textContent='—';$('sname').textContent='무기가 없습니다';$('flavor').textContent='아래에서 무기를 골라 다시 도전하세요.';
     $('fCost').textContent='-';$('fSell').textContent='-';$('fRate').textContent='-';$('fFail').textContent='-';
-    $('hamState').textContent=S.charge+' / '+MAXCH;
+    $('hamState').textContent=S.charge+' / '+chMax();
     en.disabled=true;sub.textContent='강화할 무기가 없습니다.';sl.hidden=true;nw.hidden=false;return;
   }
   renderOrder();
@@ -2049,7 +2285,7 @@ function renderStage(){
   $('btnUseS').textContent='🛡 가호 '+(S.useS?'ON':'OFF')+' · '+S.items.shield+'장';$('btnUseS').title=(l>SHIELD_MAX?'가호의 수정은 +8∼+'+SHIELD_MAX+'에서만 작동해요':'+8∼+'+SHIELD_MAX+'에서 단계 하락을 막아 줘요');$('btnUseS').setAttribute('aria-pressed',S.useS?'true':'false');
   var cbn=$('btnCatch');cbn.hidden=!(l>=10&&l<20);cbn.textContent='🌸 벚꽃캐치 '+(catchOnNow()?'ON':'OFF');cbn.setAttribute('aria-pressed',catchOnNow()?'true':'false');if(l>=10&&!S.catchSeen){S.catchSeen=true;addLog('🌸 +10 이상부터 벚꽃캐치를 켜면 성공 확률을 올릴 수 있어요! (강화 버튼 위)','g')}
   $('fFail').textContent=l>=MAXL?'-':failText(l);
-  $('hamState').textContent=S.charge+' / '+MAXCH;
+  $('hamState').textContent=S.charge+' / '+chMax();
   nw.hidden=true;sl.hidden=false;sl.disabled=l<=startLv()||l<1||busy;sl.textContent=l<=startLv()||l<1?'현재 무기 팔기 · 판매 불가':'현재 무기 팔기 · '+fmt(sellPrice(l))+' G';
   if(busy){en.disabled=true;sub.textContent='불을 지피는 중...'}
   else if(l>=MAXL){en.disabled=true;sub.textContent='초월의 끝! 팔거나 전당에 봉헌하세요.'}
@@ -2083,6 +2319,9 @@ function renderShop(){
   $('btnBuy').disabled=S.gold<tprice();$('btnBuy').textContent='깨짐 방지권 사기 '+fmt(tprice())+' G';
   var ap=$('btnApp'),mx=S.app>=APPMAX;ap.disabled=mx||S.gold<appPrice();
   ap.textContent=mx?'도제 최대 고용 (Lv '+APPMAX+')':'도제 고용 Lv '+S.app+' → '+(S.app+1)+' · '+fmt(appPrice())+' G';
+  var cb=$('btnCap'),cx=S.cap>=CAPMAX;cb.disabled=cx||S.gold<CAPP[Math.min(S.cap,CAPMAX-1)];
+  cb.textContent=cx?'강화권 보관함 최대 (최대 '+chMax()+'개)':'강화권 보관함 '+chMax()+' → '+(chMax()+1)+'개 · '+fmt(CAPP[S.cap])+' G';
+  $('capNote').textContent='강화권을 한 번에 더 많이 모아 둘 수 있어요. 지금 최대 '+chMax()+'개.';
   $('appNote').textContent='도제 한 명당 정답 보상이 4 G씩 늘어납니다. 지금 +'+(S.app*4)+' G.';
   $('relics').innerHTML=RELICS.map(function(r){var h=has(r.id);return'<div class="relic '+(h?'has':'lock')+'"><b>'+(h?esc(r.name):'???')+'</b><span>'+(h?esc(r.desc):'아직 발견하지 못했습니다')+'</span></div>'}).join('');
 }
@@ -2141,7 +2380,7 @@ $('btnBuy').onclick=buyTicket;
 $('btnBlessBuy').onclick=buyBless;$('btnShieldBuy').onclick=buyShield;
 $('btnUseB').onclick=function(){if(busy||S.items.bless<1)return;S.useB=!S.useB;sfx('coin');save();renderAll()};
 $('btnUseS').onclick=function(){if(busy||S.items.shield<1)return;S.useS=!S.useS;sfx('coin');save();renderAll()};
-$('btnApp').onclick=buyApp;
+$('btnApp').onclick=buyApp;$('btnCap').onclick=buyCap;
 $('titleList').addEventListener('click',function(e){var b=e.target.closest('[data-t]');if(!b)return;var id=b.getAttribute('data-t');S.title=S.title===id?'':id;ttlKey='';sfx('coin');save();renderAll()});
 $('rangeSel').onchange=function(){S.range=this.value;S.lastIdx=-1;newQuestion();save();renderAll()};
 function focusTyped(){var i=$('typedIn');if(i){try{i.focus({preventScroll:true})}catch(x){}}}
@@ -2208,7 +2447,7 @@ var secretBuf='';
 document.addEventListener('keydown',function(e){
   if(e.target&&/^(TEXTAREA|INPUT)$/.test(e.target.tagName))return;
   if(e.key&&e.key.length===1){secretBuf=(secretBuf+e.key.toLowerCase()).slice(-4);if(secretBuf==='meow'){catPreview=!catPreview;secretBuf='';if(S.sfx)meow();renderTop();catSay('냥!');addLog(catPreview?'🐱 어디선가 야옹 소리가 들려요... (미리보기)':'🐱 고양이가 돌아갔어요.','g')}}
-  if(!Q||Q.typed||Q.done||busy||!$('intro').hidden||!$('award').hidden||!$('dlg').hidden||catchOpen()||bossOpenNow()||!$('dragon').hidden||!$('sboss').hidden)return;
+  if(!Q||Q.kind==='order'||Q.kind==='match'||Q.kind==='tiles'||Q.typed||Q.done||busy||!$('intro').hidden||!$('award').hidden||!$('dlg').hidden||catchOpen()||bossOpenNow()||!$('dragon').hidden||!$('sboss').hidden)return;
   var n=parseInt(e.key,10);if(n>=1&&n<=Q.opts.length)answer(n-1);
 });
 
@@ -2221,4 +2460,5 @@ if(!S.started||!S.grade)openSetup();else $('intro').hidden=true;
 })();
 
 </script>
+</body></html>
 </body></html>

@@ -786,7 +786,7 @@ textarea{width:100%;min-height:240px;resize:vertical;background:#f7ecc8;color:va
     <span><button id="btnReset" type="button">기록 초기화</button></span>
   </div>
   <p class="credits">배경음악 · The Medieval Banquet (Silverman Sound Studios) · Battle Of The Creek (Alexander Nakarada) · Beat (Cloudy day) · Breaking the Siege (Arthur Vyncke) · Dragon Castle (Makai Symphony)</p>
-  <p class="credits ver">단어의 대장간 · 버전 2026.10.22a</p>
+  <p class="credits ver">단어의 대장간 · 버전 2026.10.26a</p>
 </div>
 
 <div class="modal award" id="award" role="dialog" aria-modal="true" aria-labelledby="awName" hidden>
@@ -990,6 +990,16 @@ TITLES.push(
  {id:'scorched',hid:1,name:'그을린 용사',cond:'히든 미션',perk:'정답 보상 +2 G',fx:{gp:2}},
  {id:'dexmaster',hid:1,name:'도감의 지배자',cond:'히든 미션',perk:'모든 정답 보상 +4%',fx:{rm:1.04}},
  {id:'bossy',hid:1,name:'30초의 전사',cond:'히든 미션',perk:'모든 정답 보상 +3%',fx:{rm:1.03}}
+);
+TITLES.push(
+ {id:'sentence',name:'문장 조립공',cond:'문장 만들기 20번 정답',perk:'문장 만들기 보상 +15%',fx:{xo:1.15}},
+ {id:'matcher',name:'짝꿍 맞추기 달인',cond:'짝 맞추기를 한 번도 틀리지 않고 10번 완료',perk:'짝 맞추기 보상 +15%',fx:{xm:1.15}},
+ {id:'tiler',name:'타일 장인',cond:'글자 타일 20번 정답',perk:'글자 타일 보상 ×1.6 → ×1.8',fx:{xt:1.8}},
+ {id:'allround',name:'만능 학자',cond:'객관식·문장 만들기·짝 맞추기·글자 타일을 각각 10번 이상 정답',perk:'모든 정답 보상 +3%',fx:{rm:1.03}},
+ {id:'keeper',hid:1,name:'큰 창고지기',cond:'히든 미션',perk:'강화 비용 −3%',fx:{cc:.97}},
+ {id:'hoarder',hid:1,name:'방지권 부자',cond:'히든 미션',perk:'깨짐 방지권 5% 할인',fx:{tp:.95}},
+ {id:'overflow',hid:1,name:'넘치는 망치',cond:'히든 미션',perk:'정답 보상 +3 G',fx:{gp:3}},
+ {id:'appmaster',hid:1,name:'도제들의 스승',cond:'히든 미션',perk:'정답 보상 +4 G',fx:{gp:4}}
 );
 var TMAP={};TITLES.forEach(function(t){TMAP[t.id]=t});
 var ST0={typed:0,goldq:0,orders:0,ans:0,wrong:0,maxs:0,att:0,win:0,great:0,drop:0,destroy:0,blocked:0,run:0,runmax:0,sold:0,tclean:0,cTry:0,cHit:0,cRun:0,cMax:0,cPerf:0,fast:0,rev:0,dragon:0,dragonWin:0};
@@ -1310,7 +1320,7 @@ function orderQ(){
   for(var n=0;n<10;n++){sh=shuffle(ids.slice());if(sh.some(function(v,i){return t[v]!==t[i]}))break}
   return{kind:'order',sent:x,ans:t,bank:sh.map(function(i){return{w:t[i],used:false}}),line:emptyLine(t.length),done:false,ok:false,golden:false,idx:0,typed:false,opts:[]};
 }
-function orderCheck(){return Q.line.map(function(i){return i<0?'':Q.bank[i].w}).join(' ')===Q.ans.join(' ')}
+function orderCheck(){return Q.line.map(function(i){return i<0?'':Q.bank[i].w}).join(' ').toLowerCase()===Q.ans.join(' ').toLowerCase()}
 function renderSO(box){
   var h='<div class="qtype">🧩 문장 만들기 · 단어를 눌러 알맞은 순서로 놓으세요 · 보상 ×'+ordMult(Q.bank.length).toFixed(1)+' · 강화권 '+(Q.bank.length<=5?2:3)+'장</div>';
   h+='<div class="prompt ordk">'+esc(Q.sent.k)+'</div>';
@@ -1344,7 +1354,7 @@ function finishOrder(ok){
   var thisQ=Q,full=Q.ans.join(' ');
   if(ok){
     S.wrongRun=0;S.recentWrong=[];S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;S.st.ord=(S.st.ord||0)+1;
-    var base=20+Math.min(S.streak,10)*2+S.app*4,om=ordMult(Q.bank.length),m=(has('hammer')?1.3:1)*cfg().mult*om*(tf().rm||1)*fameBonus();
+    var base=20+Math.min(S.streak,10)*2+S.app*4,om=ordMult(Q.bank.length),m=(has('hammer')?1.3:1)*cfg().mult*om*(tf().xo||1)*(tf().rm||1)*fameBonus();
     var gain=Math.round(base*m)+(tf().gp||0),extra=['문장 ×'+om.toFixed(1)];
     if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}
     var cgn=Q.bank.length<=5?2:3;S.gold+=gain;var fullc=addCharge(cgn);sfx('right');
@@ -1364,7 +1374,7 @@ function tilesQ(idx){
 function tilesWord(){return Q.line.map(function(i){return i<0?'':Q.bank[i].ch}).join('')}
 function renderTiles(box){
   var w=WL()[Q.idx],n=Q.bank.length;
-  var h='<div class="qtype">🔤 글자 타일 · 글자를 눌러 영어 단어를 완성하세요 · 보상 ×'+TILEM+' · 강화권 2장</div><div class="prompt">'+esc(w.ko)+'</div>';
+  var h='<div class="qtype">🔤 글자 타일 · 글자를 눌러 영어 단어를 완성하세요 · 보상 ×'+(tf().xt||TILEM)+' · 강화권 2장</div><div class="prompt">'+esc(w.ko)+'</div>';
   h+='<div class="tline'+(Q.done?(Q.ok?' ok':' no'):'')+'">';
   for(var k=0;k<n;k++){
     if(Q.line[k]>=0)h+='<button type="button" class="tl on" data-tl="'+k+'"'+(Q.done?' disabled':'')+'>'+esc(Q.bank[Q.line[k]].ch)+'</button>';
@@ -1452,11 +1462,11 @@ function matchClick(e){
 function finishMatch(){
   var thisQ=Q,mi=Q.mist,fac=mi===0?1:mi<=2?.6:.3;
   Q.pairs.forEach(function(p){var w=WL()[p.idx];if(!w)return;if(p.err===0){w.ok++;w.run++}else{w.no++;w.run=0}});
-  S.wrongRun=0;S.recentWrong=[];S.solved++;S.st.ans++;S.st.match=(S.st.match||0)+1;
+  S.wrongRun=0;S.recentWrong=[];S.solved++;S.st.ans++;S.st.match=(S.st.match||0)+1;if(mi===0)S.st.mperf=(S.st.mperf||0)+1;
   var extra=['짝 맞추기 ×'+MATCHM+(fac<1?' · 실수 감점 ×'+fac:'')];
   if(mi===0){S.streak++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}}
   else if(mi>=3){S.streak=0;S.st.wrong++}
-  var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*MATCHM*fac*(tf().rm||1)*fameBonus();
+  var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*MATCHM*fac*(tf().xm||1)*(tf().rm||1)*fameBonus();
   var gain=Math.round(base*m)+(tf().gp||0);
   var cgn=mi>=3?2:3;S.gold+=gain;var full=addCharge(cgn);sfx('right');
   Q.gainTxt='+'+fmt(gain)+' G ('+extra.join(' · ')+')'+chTxt(cgn,full);
@@ -1563,14 +1573,14 @@ function studyTick(){
 function finish(ok){
   var w=WL()[Q.idx],thisQ=Q;
   if(ok){
-    S.wrongRun=0;S.recentWrong=[];if(!Q.hint&&Q.t0&&Date.now()-Q.t0<=3000)S.st.fast++;w.ok++;w.run++;S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;
-    var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*(Q.hint?.5:1)*(Q.typed?(tf().tm||TYPEMULT):1)*(Q.kind==='tiles'?TILEM:1)*(Q.golden?3:1)*(tf().rm||1)*fameBonus();
+    S.wrongRun=0;S.recentWrong=[];if(!Q.hint&&Q.t0&&Date.now()-Q.t0<=3000)S.st.fast++;w.ok++;w.run++;S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;if(Q.kind==='tiles')S.st.til=(S.st.til||0)+1;
+    var base=20+Math.min(S.streak,10)*2+S.app*4,m=(has('hammer')?1.3:1)*cfg().mult*(Q.hint?.5:1)*(Q.typed?(tf().tm||TYPEMULT):1)*(Q.kind==='tiles'?(tf().xt||TILEM):1)*(Q.golden?3:1)*(tf().rm||1)*fameBonus();
     var gain=Math.round(base*m)+(tf().gp||0),extra=[];
     if(tf().gp)extra.push('칭호 +'+tf().gp);
     if(Q.typed&&!Q.hint){S.st.typed++;S.st.tclean++;dailyAdd('typed',1)}else if(Q.typed)S.st.tclean=0;if(Q.golden){S.st.goldq++;dailyAdd('golden',1)}
     dailyAdd('ans',1);dailyAdd('streak',S.streak,true);
     if(Q.golden)extra.push('황금 ×3');
-    if(Q.kind==='tiles')extra.push('글자 타일 ×'+TILEM);
+    if(Q.kind==='tiles')extra.push('글자 타일 ×'+(tf().xt||TILEM));
     if(Q.typed&&!Q.hint)extra.push('직접 쓰기 ×'+TYPEMULT);
     if(S.app>0)extra.push('도제 +'+(S.app*4));
     if(S.streak%5===0){var cb=Math.round((30+10*Math.min(Math.floor(S.streak/5),6))*cfg().mult*(tf().cm||1));gain+=cb;extra.push(S.streak+'연속 보너스 +'+cb);addLog(S.streak+'연속 정답! 보너스 +'+fmt(cb)+' G','g')}
@@ -1636,6 +1646,8 @@ function checkTitles(){
   if(S.login.n>=3)award('login3');if(S.login.n>=7)award('login7');if(S.login.n>=14)award('login14');
   if(S.st.cMax>=5)award('cstreak');if(S.st.cPerf>=10)award('cperfect');if(S.st.fast>=20)award('flash');if(S.st.rev>=10)award('revenge');
   if(S.st.destroy>=5)award('phoenix');if(S.st.destroy>=10)award('ashes');if(WEAPONS.some(dexFull))award('collector');
+  if((S.st.ord||0)>=20)award('sentence');if((S.st.mperf||0)>=10)award('matcher');if((S.st.til||0)>=20)award('tiler');
+  if((S.st.ord||0)>=10&&(S.st.match||0)>=10&&(S.st.til||0)>=10&&S.st.ans-(S.st.ord||0)-(S.st.match||0)-(S.st.til||0)>=10)award('allround');
   if(S.pity>=PITYMAX)award('unlucky');if(S.gold>=100000)award('rich');
 }
 
@@ -1652,6 +1664,10 @@ var MISSIONS=[
  {id:'m_wizard',name:'마법사의 길',hint:'완드의 마지막 모습을 보고 싶다면 높이 올라가세요',desc:'완드를 +19 이상으로 강화',ck:function(){return S.bestW.wand>=19},g:1200,title:'wizard'},
  {id:'m_big',name:'큰손',hint:'무기 하나를 아주 비싸게 팔아 보세요',desc:'한 번에 5,000 G 이상에 무기 팔기',ck:function(){return S.st.sold>=5000},g:800},
  {id:'m_tclean',name:'철자 장인',hint:'힌트 없이 철자를 연달아 맞혀 보세요',desc:'힌트 없이 직접 쓰기 10연속 정답',ck:function(){return S.st.tclean>=10},g:800,title:'speller'},
+ {id:'m_keeper',name:'큰 창고지기',hint:'강화권을 쌓아 둘 곳을 끝까지 넓혀 보세요',desc:'강화권 보관함을 최대(10개)로 넓히기',ck:function(){return S.cap>=CAPMAX},g:1000,title:'keeper'},
+ {id:'m_hoard',name:'방지권 부자',hint:'방지권을 정말 많이 쌓아 두세요',desc:'방지권 10장 보유',ck:function(){return S.tickets>=10},g:600,title:'hoarder'},
+ {id:'m_overflow',name:'넘치는 망치',hint:'넓힌 창고를 가득 채워 보세요',desc:'보관함을 넓힌 뒤 강화권을 가득 채우기',ck:function(){return S.cap>=1&&S.charge>=chMax()},g:600,title:'overflow'},
+ {id:'m_appmaster',name:'도제들의 스승',hint:'도제를 끝까지 키워 보세요',desc:'도제를 최고 단계(Lv 10)까지 고용하기',ck:function(){return S.app>=APPMAX},g:1500,title:'appmaster'},
  {id:'m_stock',name:'방지권 비축가',hint:'방지권을 한가득 쌓아 두세요',desc:'방지권 5장 보유',ck:function(){return S.tickets>=5},g:300},
  {id:'m_riser',name:'불굴의 의지',hint:'굴러떨어져도 다시 오르는 자',desc:'단계가 3번 이상 내려간 뒤 +12 달성',ck:function(){return S.st.drop>=3&&S.best>=12},g:700,title:'riser'},
  {id:'m_sage300',name:'삼백 번의 서생',hint:'정답이 모이고 모이면…',desc:'정답 300개',ck:function(){return S.st.ans>=300},g:600,title:'sage300'},

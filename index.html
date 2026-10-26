@@ -4,6 +4,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Noto+Serif+KR:wght@400;600;700;900&family=UnifrakturCook:wght@700&display=swap">
 
+<style>.gsent{font-family:var(--lat);font-size:30px;font-weight:800;color:var(--ink);margin:6px 0 8px;line-height:1.35;overflow-wrap:anywhere}
+.gblank{display:inline-block;min-width:3.2em;padding:0 8px;border-bottom:4px solid var(--blood);text-align:center;color:var(--blood)}
+.gblank.ok{color:#2e7d4f;border-color:#2e7d4f}.gblank.no{color:#a33;border-color:#a33}
+@media (max-width:560px){.gsent{font-size:24px}}#opBadge{position:fixed;left:10px;bottom:10px;z-index:50;background:rgba(40,12,8,.92);color:#ffd45c;border:2px solid #d8a63a;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:800;pointer-events:none}
+</style>
 </head><body><style>
 /* Medieval smithy: dark stone hall, oak and iron frames, aged parchment cards, wax-seal numbers, gilt titles. Left column = the forge window (iron frame), right = parchment question. */
 :root{
@@ -786,7 +791,7 @@ textarea{width:100%;min-height:240px;resize:vertical;background:#f7ecc8;color:va
     <span><button id="btnReset" type="button">기록 초기화</button></span>
   </div>
   <p class="credits">배경음악 · The Medieval Banquet (Silverman Sound Studios) · Battle Of The Creek (Alexander Nakarada) · Beat (Cloudy day) · Breaking the Siege (Arthur Vyncke) · Dragon Castle (Makai Symphony)</p>
-  <p class="credits ver">단어의 대장간 · 버전 2026.10.26a</p>
+  <p class="credits ver">단어의 대장간 · 버전 2026.10.31a</p>
 </div>
 
 <div class="modal award" id="award" role="dialog" aria-modal="true" aria-labelledby="awName" hidden>
@@ -1001,6 +1006,7 @@ TITLES.push(
  {id:'overflow',hid:1,name:'넘치는 망치',cond:'히든 미션',perk:'정답 보상 +3 G',fx:{gp:3}},
  {id:'appmaster',hid:1,name:'도제들의 스승',cond:'히든 미션',perk:'정답 보상 +4 G',fx:{gp:4}}
 );
+TITLES.push({id:'grammar',name:'문법 대장장이',cond:'문법 고르기 20번 정답',perk:'문법 고르기 보상 +15%',fx:{xg:1.15}});
 var TMAP={};TITLES.forEach(function(t){TMAP[t.id]=t});
 var ST0={typed:0,goldq:0,orders:0,ans:0,wrong:0,maxs:0,att:0,win:0,great:0,drop:0,destroy:0,blocked:0,run:0,runmax:0,sold:0,tclean:0,cTry:0,cHit:0,cRun:0,cMax:0,cPerf:0,fast:0,rev:0,dragon:0,dragonWin:0};
 function defState(){return{
@@ -1019,7 +1025,7 @@ if(S.weapon==='club')S.weapon='wand';if(S.seenW&&S.seenW.club){if(!S.seenW.wand|
 S.st=Object.assign({},ST0,S.st);S.dboss=Object.assign({day:'',claimed:0,wins:0,tries:0},S.dboss);S.sentTxt=S.sentTxt||'';S.buyDay=Object.assign({d:'',b:0,s:0},S.buyDay);S.name=S.name||'';S.myth=S.myth||[];S.wrongRun=S.wrongRun||0;S.recentWrong=S.recentWrong||[];S.login=Object.assign({last:'',n:0,total:0},S.login);S.items=Object.assign({bless:0,shield:0},S.items);S.boss=Object.assign({best:0,day:'',runs:0,total:0},S.boss);if(S.items.bless<1)S.useB=false;if(S.items.shield<1)S.useS=false;
 S.weapon=S.weapon||'sword';S.seenW=S.seenW||{};WEAPONS.forEach(function(w){S.seenW[w]=S.seenW[w]||{}});
 if(o&&o.v===2&&!o.seenW)S.seenW.sword=Object.assign({0:true},o.seen||{});
-S.bestW=S.bestW||{};WEAPONS.forEach(function(w){if(S.bestW[w]==null)S.bestW[w]=(w==='sword'?(S.best||0):0)});S.hall=S.hall||[];
+S.bestW=S.bestW||{};WEAPONS.forEach(function(w){if(S.bestW[w]==null)S.bestW[w]=(w==='sword'?(S.best||0):0)});S.hall=S.hall||[];S.hallLv=(S.hallLv||[]).slice(0,S.hall.length);while(S.hallLv.length<S.hall.length)S.hallLv.push(20);
 S.st=Object.assign({},ST0,S.st||{});S.titles=S.titles||{};S.cap=Math.max(0,Math.min(5,S.cap|0));S.ms=S.ms||{};S.dstreak=S.dstreak||{last:'',n:0};
 if(o&&o.hammer&&!o.charge)S.charge=1;
 delete S.hammer;
@@ -1279,7 +1285,8 @@ function newQuestion(){
   if(S.mode==='auto'||S.mode==='mix'){var rr=Math.random();
     if(rr<ORDP){var oq=orderQ();if(oq){oq.idx=idx;Q=oq;return}}
     else if(rr<ORDP+MATCHP){var mq=matchQ(idx);if(mq){Q=mq;return}}
-    else if(rr<ORDP+MATCHP+TILEP){var tq=tilesQ(idx);if(tq){Q=tq;return}}}
+    else if(rr<ORDP+MATCHP+TILEP){var tq=tilesQ(idx);if(tq){Q=tq;return}}
+    else if(rr<ORDP+MATCHP+TILEP+GRAMP){Q=gramQ(idx);return}}
   var gq=Math.random()<GOLDQ+(tf().gq||0);
   var dir=S.mode==='auto'?(Math.random()<c.en?'en2ko':'ko2en'):S.mode==='mix'?(Math.random()<.5?'en2ko':'ko2en'):S.mode;
   var w=WL()[idx];
@@ -1364,6 +1371,54 @@ function finishOrder(ok){
   }else{S.streak=0;S.st.wrong++;sfx('wrong');addLog('오답: 문장 만들기 — '+full,'f');studyStart()}
   save();renderAll();
 }
+var GRAMS=["나는 어제 달렸어.|I ___ yesterday.|ran|run", "그녀는 어제 학교에 갔어.|She ___ to school yesterday.|went|go", "우리는 어젯밤에 피자를 먹었어.|We ___ pizza last night.|ate|eat", "나는 지난주에 새 모자를 샀어.|I ___ a new hat last week.|bought|buy", "그녀는 어제 노래를 불렀어.|She ___ a song yesterday.|sang|sing", "그들은 어제 축구를 했어.|They ___ soccer yesterday.|played|play", "나는 어젯밤에 일찍 잤어.|I ___ early last night.|slept|sleep", "그는 어제 나에게 선물을 줬어.|He ___ me a gift yesterday.|gave|give", "우리는 어제 공원에서 친구를 만났어.|We ___ a friend in the park yesterday.|met|meet", "새 한 마리가 어제 높이 날았어.|A bird ___ high yesterday.|flew|fly", "그녀는 어제 그림을 그렸어.|She ___ a picture yesterday.|drew|draw", "나는 어제 열쇠를 잃어버렸어.|I ___ my key yesterday.|lost|lose", "그는 어제 영어를 공부했어.|He ___ English yesterday.|studied|study", "나는 오늘 아침에 일찍 일어났어.|I ___ up early this morning.|got|get", "우리는 어제 바다에서 수영했어.|We ___ in the sea yesterday.|swam|swim", "그녀는 어제 케이크를 만들었어.|She ___ a cake yesterday.|made|make", "나는 어제 그를 봤어.|I ___ him yesterday.|saw|see", "그는 어제 편지를 썼어.|He ___ a letter yesterday.|wrote|write", "그는 우유를 마셔요.|He ___ milk.|drinks|drink", "그녀는 매일 학교에 가요.|She ___ to school every day.|goes|go", "내 남동생은 축구를 좋아해요.|My brother ___ soccer.|likes|like", "우리 엄마는 저녁을 요리해요.|My mom ___ dinner.|cooks|cook", "고양이가 생선을 먹어요.|The cat ___ fish.|eats|eat", "그는 영어를 공부해요.|He ___ English.|studies|study", "선생님은 우리에게 영어를 가르쳐요.|The teacher ___ us English.|teaches|teach", "우리 아빠는 매일 아침 달려요.|My dad ___ every morning.|runs|run", "그는 매일 숙제를 해요.|He ___ his homework every day.|does|do", "교실에 아이들이 많아요.|There are many ___ in the classroom.|children|child", "나는 발이 두 개 있어요.|I have two ___.|feet|foot", "나는 남자 세 명을 봤어요.|I saw three ___.|men|man", "접시 세 개가 있어요.|There are three ___.|dishes|dish", "책상 위에 상자가 두 개 있어요.|There are two ___ on the desk.|boxes|box", "나는 쥐 두 마리를 봤어요.|I saw two ___.|mice|mouse", "공원에 나무가 많아요.|There are many ___ in the park.|trees|tree", "나는 열한 살이에요.|I ___ eleven years old.|am|is", "그들은 내 친구예요.|They ___ my friends.|are|is", "그녀는 선생님이에요.|She ___ a teacher.|is|are", "너는 키가 커요.|You ___ tall.|are|is", "어제 나는 아팠어요.|I ___ sick yesterday.|was|am", "그들은 어제 집에 있었어요.|They ___ at home yesterday.|were|was", "나는 지금 책을 읽고 있어요.|I am ___ a book now.|reading|read", "그는 지금 자고 있어요.|He is ___ now.|sleeping|sleep", "그들은 지금 달리고 있어요.|They are ___ now.|running|run", "그녀는 지금 춤추고 있어요.|She is ___ now.|dancing|dance", "아이들이 공원에서 놀고 있어요.|The children are ___ in the park.|playing|play", "나는 수영할 수 있어요.|I can ___.|swim|swims", "그녀는 피아노를 칠 수 있어요.|She can ___ the piano.|play|plays", "나는 내일 거기에 갈 거예요.|I will ___ there tomorrow.|go|went", "그는 노래를 부를 수 없어요.|He can't ___.|sing|sings", "이 가방이 더 커요.|This bag is ___.|bigger|more big", "나는 너보다 키가 더 커요.|I am ___ than you.|taller|more tall", "오늘이 어제보다 더 따뜻해요.|Today is ___ than yesterday.|warmer|more warm", "이 케이크가 가장 맛있어요.|This cake is the ___.|best|most good", "나는 사과를 한 개 먹어요.|I eat ___ apple.|an|a", "그는 우산이 한 개 있어요.|He has ___ umbrella.|an|a", "나는 책이 한 권 있어요.|I have ___ book.|a|an", "이것은 달걀이에요.|This is ___ egg.|an|a", "그녀는 한 시간 동안 공부했어요.|She studied for ___ hour.|an|a", "이것은 그의 가방이에요.|This is ___ bag.|his|him", "나는 그녀를 좋아해요.|I like ___.|her|she", "그것은 우리 집이에요.|It is ___ house.|our|we", "그들을 도와주세요.|Please help ___.|them|they", "이 연필은 내 것이에요.|This pencil is ___.|mine|my", "너는 그를 아니?|Do you know ___?|him|he", "그는 우유를 마시지 않아요.|He doesn't ___ milk.|drink|drinks", "너는 개를 좋아하니?|Do you ___ dogs?|like|likes", "그녀는 영어를 좋아하니?|Does she ___ English?|like|likes", "나는 어제 학교에 가지 않았어요.|I didn't ___ to school yesterday.|go|went", "그는 어제 TV를 보지 않았어요.|He didn't ___ TV yesterday.|watch|watched"];
+var GRAMP=.08,GRAMM=1.5,lastGram=[];
+function gramFull(it){return it.s.replace('___',it.a)}
+function gramQ(idx){
+  var pool=GRAMS.filter(function(x){return lastGram.indexOf(x)<0});
+  if(!pool.length){lastGram=[];pool=GRAMS}
+  var g=pool[rnd(pool.length)];lastGram.push(g);if(lastGram.length>14)lastGram.shift();
+  var p=g.split('|'),it={k:p[0],s:p[1],a:p[2],w:p[3]},opts=shuffle([it.a,it.w]);
+  return{kind:'gram',it:it,idx:idx,opts:opts,right:opts.indexOf(it.a),pick:-1,done:false,ok:false,golden:false,typed:false,ans:it.a};
+}
+function renderGram(box){
+  var it=Q.it,h='<div class="qtype">✏ 문법 고르기 · 빈칸에 알맞은 말을 고르세요 · 보상 ×'+(GRAMM*(tf().xg||1)).toFixed(1).replace('.0','')+' · 강화권 1장</div>';
+  h+='<div class="prompt ordk">'+esc(it.k)+'</div>';
+  h+='<div class="gsent">'+esc(it.s).replace('___','<b class="gblank'+(Q.done?(Q.ok?' ok':' no'):'')+'">'+(Q.done?esc(it.a):'(&nbsp;&nbsp;&nbsp;&nbsp;)')+'</b>')+'</div>';
+  h+='<div class="opts">';
+  Q.opts.forEach(function(o,i){
+    var cl='opt';if(Q.done){if(i===Q.right)cl+=' right';else if(i===Q.pick)cl+=' wrong'}
+    h+='<button type="button" class="'+cl+'" data-i="'+i+'"'+(Q.done?' disabled':'')+'><i>'+ROMAN[i]+'</i><span>'+esc(o)+'</span></button>';
+  });
+  h+='</div>';
+  if(Q.done){
+    h+='<div class="fb '+(Q.ok?'ok':'no')+'"><b>'+(Q.ok?'정답입니다! '+(Q.gainTxt||''):'아쉬워요.')+'</b> '+esc(gramFull(it))+(Q.ok?'':' (정답 문장이에요)')+'</div>';
+    if(!Q.ok&&studyLeft()>0)h+='<div class="study"><i id="studyBar" style="width:'+Math.round(studyLeft()/STUDY_MS*100)+'%"></i><span id="studyTxt">🔥 정답 문장을 읽어 보세요</span></div>';
+  }else h+='<div class="fb idle">빈칸에 들어갈 알맞은 말을 고르세요. 키보드 1∼2번으로도 고를 수 있어요.</div>';
+  box.innerHTML=h;
+  $('btnSkip').hidden=Q.done;$('btnNext').hidden=!Q.done;$('btnNext').disabled=!!(Q.done&&!Q.ok&&studyLeft()>0);
+  $('quizCard').classList.remove('goldq');
+  $('todo').innerHTML=S.charge>0?'지금 할 일: <b>강화권 '+S.charge+'장</b>으로 강화하거나 문제를 더 풀어 모으세요.':'지금 할 일: <b>빈칸에 알맞은 말</b>을 고르세요.';
+  $('needNote').textContent='연속 정답 '+S.streak+' · 5연속마다 보너스';
+}
+function gramPick(i){
+  if(!Q||Q.kind!=='gram'||Q.done||busy)return;
+  Q.done=true;Q.pick=i;Q.ok=i===Q.right;finishGram(Q.ok);
+}
+function finishGram(ok){
+  var thisQ=Q,full=gramFull(Q.it);
+  if(ok){
+    S.wrongRun=0;S.recentWrong=[];S.streak++;S.solved++;S.st.ans++;if(S.streak>S.st.maxs)S.st.maxs=S.streak;S.st.gram=(S.st.gram||0)+1;
+    var base=20+Math.min(S.streak,10)*2+S.app*4,gm=GRAMM*(tf().xg||1),m=(has('hammer')?1.3:1)*cfg().mult*gm*(tf().rm||1)*fameBonus();
+    var gain=Math.round(base*m)+(tf().gp||0),extra=['문법 ×'+gm.toFixed(1).replace('.0','')];
+    if(S.streak%5===0){var tkn=S.streak%10===0?2:1;S.tickets+=tkn;extra.push('깨짐 방지권 +'+tkn);addLog(S.streak+'연속 정답! 깨짐 방지권 +'+tkn,'g')}
+    var cgn=1;S.gold+=gain;var fullc=addCharge(cgn);sfx('right');
+    Q.gainTxt='+'+fmt(gain)+' G ('+extra.join(' · ')+')'+chTxt(cgn,fullc);
+    addLog('정답! 골드 +'+fmt(gain)+' (문법: '+full+')','s');
+    setTimeout(function(){if(Q===thisQ&&Q.done&&!busy&&$('intro').hidden&&$('award').hidden&&$('dlg').hidden){newQuestion();renderQuiz();focusTyped()}},1500);
+  }else{S.streak=0;S.st.wrong++;sfx('wrong');addLog('오답: 문법 — '+full,'f');studyStart()}
+  save();renderAll();
+}
 /* ---------- 글자 타일 스펠링 ---------- */
 function tilesQ(idx){
   var w=WL()[idx];if(!w||!/^[A-Za-z]{3,9}$/.test(w.en))return null;
@@ -1407,6 +1462,12 @@ function tilesClick(e){
   if(e.target.closest('#tClear')){Q.bank.forEach(function(b){b.used=false});Q.line=emptyLine(Q.bank.length);sfx('unpick');renderQuiz();return}
   if(e.target.closest('#tGo'))tilesSubmit();
 }
+/* 개발자 도구 · 소스 보기 · 오른쪽 클릭 막기 (입력창에서는 복사/붙여넣기 메뉴 허용) */
+document.addEventListener('contextmenu',function(e){var t=e.target;if(t&&/^(INPUT|TEXTAREA)$/.test(t.tagName))return;e.preventDefault()});
+document.addEventListener('keydown',function(e){
+  var cm=e.ctrlKey||e.metaKey,c=e.code;
+  if(e.key==='F12'||(cm&&e.shiftKey&&(c==='KeyI'||c==='KeyJ'||c==='KeyC'))||(cm&&!e.shiftKey&&c==='KeyU')||(e.metaKey&&e.altKey&&(c==='KeyI'||c==='KeyJ'||c==='KeyC'||c==='KeyU'))){e.preventDefault();e.stopPropagation()}
+},true);
 document.addEventListener('keydown',function(e){
   if(!Q||Q.kind!=='tiles'||Q.done||busy||e.ctrlKey||e.metaKey||e.altKey)return;
   if(e.target&&/^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName))return;
@@ -1478,7 +1539,8 @@ function speak(text){try{if(!window.speechSynthesis)return;speechSynthesis.cance
 function blanksOf(ans,hint){
   return ans.split('').map(function(ch,i){return /[A-Za-z]/.test(ch)?(hint&&i===0?ch.toUpperCase():'_'):(ch===' '?'\u3000':ch)}).join(' ');
 }
-function renderQuiz(){
+function renderQuiz(){renderSkip();return renderQuiz0()}
+function renderQuiz0(){
   var box=$('quizBody'),c=cfg();
   var rb0=rangeBounds(),cnt=0;for(var q=rb0[0];q<=rb0[1];q++)if(allowed(q))cnt++;
   if(cnt<4)cnt=rb0[1]-rb0[0]+1;
@@ -1489,6 +1551,7 @@ function renderQuiz(){
   if(Q.kind==='order'){renderSO(box);return}
   if(Q.kind==='match'){renderMatch(box);return}
   if(Q.kind==='tiles'){renderTiles(box);return}
+  if(Q.kind==='gram'){renderGram(box);return}
   var w=WL()[Q.idx],isEn=Q.dir==='en2ko',h='';
   h+='<div class="qtype">'+(Q.golden?'<span class="goldtag">✦ 황금 두루마리 · 보상 ×3</span> ':'')+(isEn?'영어 단어 · 알맞은 뜻을 고르세요':Q.typed?'✍ 영어 철자를 직접 써 보세요 · 보상 ×'+TYPEMULT:'우리말 뜻 · 알맞은 영어를 고르세요')+'</div>';
   h+='<div class="prompt">'+esc(isEn?w.en:w.ko)+'</div>';
@@ -1526,6 +1589,7 @@ $('quizBody').addEventListener('click',function(e){
   if(Q.kind==='order'){orderClick(e);return}
   if(Q.kind==='match'){matchClick(e);return}
   if(Q.kind==='tiles'){tilesClick(e);return}
+  if(Q.kind==='gram'){var gb=e.target.closest('.opt');if(gb)gramPick(Number(gb.getAttribute('data-i')));return}
   var b=e.target.closest('.opt');if(b){answer(Number(b.getAttribute('data-i')));return}
   if(e.target.closest('#btnToType')){Q.typed=true;Q.hint=false;Q.text='';renderQuiz();focusTyped();return}
   if(e.target.closest('#btnTyped')){submitTyped();return}
@@ -1547,7 +1611,7 @@ function makeCard(c){
     x.fillStyle='#ffd45c';x.font='900 40px serif';x.fillText({20:'신화 달성 증서',21:'각성 달성 증서',22:'초월 달성 증서'}[CL],60,150);
     x.fillStyle='#fff6e0';x.font='900 58px serif';x.fillText(heroT(c.n),60,250);
     x.fillStyle='#ffe9d0';x.font='700 28px serif';x.fillText('+'+CL+' 「'+c.nm+'」',60,320);x.fillText({20:'신화의 무기를 완성했습니다!',21:'신화를 넘어 무기를 각성시켰습니다!',22:'한계를 넘어 무기를 초월시켰습니다!'}[CL],60,362);
-    x.fillStyle='#d8a63a';x.font='700 24px serif';x.fillText(c.d,60,440);
+    x.fillStyle='#d8a63a';x.font='700 24px serif';x.fillText(c.d,60,440);if(c.op){x.fillStyle='#ff9a6b';x.font='700 22px serif';x.fillText('※ 운영자의 손길 사용',60,478)}
     var a=document.createElement('a');a.download='myth_'+c.n+'.png';
     try{cv.toBlob(function(b){a.href=URL.createObjectURL(b);document.body.appendChild(a);a.click();document.body.removeChild(a)})}catch(e){}
   }
@@ -1555,7 +1619,7 @@ function makeCard(c){
 }
 function mythDone(lv){
   lv=lv||20;var T={20:['신화','🏆 신화 완성! 🏆','신화의 무기를 완성했어요!'],21:['각성','🔥 신화 각성! 🔥','신화를 넘어 무기를 각성시켰어요!'],22:['초월','🌟 한계 초월! 🌟','한계를 넘어 무기를 초월시켰어요!']}[lv];
-  var c={n:mythName(),w:S.weapon,d:today(),nm:nm(lv),lv:lv};var dup=S.myth.some(function(x){return x.w===c.w&&x.d===c.d&&(x.lv||20)===lv});if(!dup){S.myth.push(c);S.myth=S.myth.slice(-30)}
+  var c={n:mythName(),w:S.weapon,d:today(),nm:nm(lv),lv:lv};if(OPM)c.op=1;var dup=S.myth.some(function(x){return x.w===c.w&&x.d===c.d&&(x.lv||20)===lv});if(!dup){S.myth.push(c);S.myth=S.myth.slice(-30)}
   addLog('🏆 '+heroT(c.n)+'가 +'+lv+' '+T[0]+'의 무기를 완성했습니다!','g');
   qAward({kind:T[1],name:heroT(c.n),desc:'+'+lv+' 「'+c.nm+'」 '+T[2],gain:'<b>축하합니다!</b><br>이 화면이나 카드 이미지를 선생님께 보여 주세요. ('+c.d+')'+(lv===20&&S.fame<F21?'<br><i>…그런데 대장간 깊은 곳에서 낯선 울림이 들려옵니다.</i>':''),card:dup?null:c});
 }
@@ -1568,7 +1632,7 @@ function studyTick(){
   var l=studyLeft(),t=$('studyTxt'),b=$('studyBar'),nx=$('btnNext');
   if(b)b.style.width=Math.round(l/STUDY_MS*100)+'%';
   if(l<=0){clearInterval(studyIv);if(t)t.textContent='다 읽었으면 다음 문제로 넘어가세요';if(nx)nx.disabled=false;return}
-  if(t)t.textContent='🔥 '+(Q&&Q.kind==='order'?'정답 문장을':'단어와 뜻을')+' 읽어 보세요 · '+Math.ceil(l/1000)+'초';
+  if(t)t.textContent='🔥 '+(Q&&(Q.kind==='order'||Q.kind==='gram')?'정답 문장을':'단어와 뜻을')+' 읽어 보세요 · '+Math.ceil(l/1000)+'초';
 }
 function finish(ok){
   var w=WL()[Q.idx],thisQ=Q;
@@ -1646,7 +1710,7 @@ function checkTitles(){
   if(S.login.n>=3)award('login3');if(S.login.n>=7)award('login7');if(S.login.n>=14)award('login14');
   if(S.st.cMax>=5)award('cstreak');if(S.st.cPerf>=10)award('cperfect');if(S.st.fast>=20)award('flash');if(S.st.rev>=10)award('revenge');
   if(S.st.destroy>=5)award('phoenix');if(S.st.destroy>=10)award('ashes');if(WEAPONS.some(dexFull))award('collector');
-  if((S.st.ord||0)>=20)award('sentence');if((S.st.mperf||0)>=10)award('matcher');if((S.st.til||0)>=20)award('tiler');
+  if((S.st.ord||0)>=20)award('sentence');if((S.st.mperf||0)>=10)award('matcher');if((S.st.til||0)>=20)award('tiler');if((S.st.gram||0)>=20)award('grammar');
   if((S.st.ord||0)>=10&&(S.st.match||0)>=10&&(S.st.til||0)>=10&&S.st.ans-(S.st.ord||0)-(S.st.match||0)-(S.st.til||0)>=10)award('allround');
   if(S.pity>=PITYMAX)award('unlucky');if(S.gold>=100000)award('rich');
 }
@@ -1705,7 +1769,7 @@ function renderMissions(){
 
 /* ---------- daily quests ---------- */
 function pad(n){return('0'+n).slice(-2)}
-function today(){if(window.__today)return window.__today;var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function today(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function dayShift(s,n){var p=s.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]+n);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function hashStr(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
 function rng(seed){return function(){seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -2100,8 +2164,8 @@ function offer(){
   var L=S.level,kn=L>21?'초월':L>20?'각성':'신화';
   openDlg(kn+'의 무기를 봉헌할까요?','<p>+'+L+' '+kn+'의 무기가 <b>전당에 영원히 남고</b>, 무기는 사라집니다.</p><p>그냥 팔면 약 <b>'+fmt(sellPrice(L))+' G</b>를 바로 받지만, 봉헌하면 <b>영구 효과</b>가 쌓입니다.</p><p>봉헌 선물 <b>+'+fmt(offerGold(L))+' G</b> · 정답 보상 <b>+'+Math.round((fameBonusN(S.fame+1)-1)*100)+'%</b> · 강화 비용 <b>−'+Math.round((1-fameCostN(S.fame+1))*100)+'%</b></p><p class="note">새 무기는 +'+startLv()+'부터 다시 시작하고, 외형 색이 바뀝니다. 영구 효과는 10번째 봉헌까지 커집니다.'+(L<MAXL&&canTrans(L)?' 봉헌하지 않고 계속 도전하면 더 높은 단계에 갈 수 있지만, 실패하면 무기가 내려가거나 부서질 수 있어요.':'')+'</p>','봉헌하기',function(){
     if(S.level===null||S.level<20)return;
-    var og=offerGold(S.level);
-    S.fame++;S.gold+=og;S.level=startLv();S.pity=0;S.hall.push(S.weapon);sn()[S.level]=true;fx('new');
+    var og=offerGold(S.level),oL=S.level;
+    S.fame++;S.gold+=og;S.level=startLv();S.pity=0;S.hall.push(S.weapon);S.hallLv.push(oL);sn()[S.level]=true;fx('new');
     addLog('무기를 봉헌했습니다! 명성 '+S.fame+' · +'+fmt(og)+' G','g');
     qAward({kind:'✦ 신화의 전당 ✦',name:S.fame+'번째 신화의 무기 봉헌',desc:'전당에 무기가 영원히 남았어요. 새 무기는 다른 빛깔로 시작합니다.'+(S.fame===F21?' 이제 +20 무기로 +21 초월에 도전할 수 있어요!':S.fame===F22?' 이제 +22 초월에도 도전할 수 있어요!':''),gain:'영구 효과 정답 보상 <b>+'+Math.round((fameBonus()-1)*100)+'%</b> · 강화 비용 <b>−'+Math.round((1-fameCost())*100)+'%</b><br>봉헌 선물 <b>+'+fmt(og)+' G</b>'});
     save();renderAll();
@@ -2116,10 +2180,10 @@ function renderHall(){
   else h+='<div class="hallhead">명성 <b>'+S.fame+'</b></div>';
   h+='<div class="hallperk"><span>정답 보상 <b>+'+Math.round((fameBonus()-1)*100)+'%</b></span><span>강화 비용 <b>−'+Math.round((1-fameCost())*100)+'%</b></span></div>';
   h+='<div class="hallswords">';
-  for(var i=0;i<Math.min(S.fame,24);i++)h+='<img alt="" style="filter:hue-rotate('+HUES[i%HUES.length]+'deg)" src="data:image/webp;base64,'+IMG[(S.hall[i]||'sword')+'_h20']+'">';
+  for(var i=0;i<Math.min(S.fame,24);i++)h+='<img alt="" style="filter:hue-rotate('+HUES[i%HUES.length]+'deg)" src="data:image/webp;base64,'+(IMG[(S.hall[i]||'sword')+'_h'+(S.hallLv[i]||20)]||IMG[(S.hall[i]||'sword')+'_h20'])+'">';
   if(S.fame<1)h+='<span class="hallempty">아직 봉헌한 무기가 없습니다</span>';
   h+='</div><p class="note">영구 효과는 10번째 봉헌까지 커집니다. 그 뒤에도 전당에는 무기가 계속 쌓여요.</p>';
-  if(S.myth.length){h+='<div class="mythl"><b>🏆 내 신화 기록</b>';S.myth.slice().reverse().slice(0,6).forEach(function(c){var i=S.myth.indexOf(c);h+='<div class="mythr"><span>'+esc(c.d)+' · +'+(c.lv||20)+' '+esc(c.nm)+'</span><button type="button" class="chip" data-m="'+i+'">카드 저장</button></div>'});h+='</div>'}
+  if(S.myth.length){h+='<div class="mythl"><b>🏆 내 신화 기록</b>';S.myth.slice().reverse().slice(0,6).forEach(function(c){var i=S.myth.indexOf(c);h+='<div class="mythr"><span>'+esc(c.d)+' · +'+(c.lv||20)+' '+esc(c.nm)+(c.op?' · 운영자의 손길':'')+'</span><button type="button" class="chip" data-m="'+i+'">카드 저장</button></div>'});h+='</div>'}
   $('hallBody').innerHTML=h;
   $('hallCount').textContent=S.fame>0?'봉헌 '+S.fame+'자루':'';
 }
@@ -2226,7 +2290,7 @@ function resolve(l,cbn,bl,sh){
   if(bl)addLog('✨ 축복서 사용! 이번 성공 확률 +'+bl+'%p','g');
   if(cbn)addLog('🌸 벚꽃캐치 성공! 이번 성공 확률 +'+cbn+'%p','g');
   var r=Math.random()*100;
-  if(r<rate(l,cbn+bl)){
+  if(OPM||r<rate(l,cbn+bl)){
     var g=Math.random()*100<great(l)&&l<19,nl=Math.min(MAXL,l+(g?2:1));
     S.level=nl;S.pity=0;sn()[nl]=true;if(g)sn()[l+1]=true;if(nl>S.best)S.best=nl;if(nl>S.bestW[S.weapon])S.bestW[S.weapon]=nl;
     S.st.win++;S.st.run++;if(S.st.run>S.st.runmax)S.st.runmax=S.st.run;if(g)S.st.great++;dailyAdd('win',1);
@@ -2400,7 +2464,11 @@ $('btnApp').onclick=buyApp;$('btnCap').onclick=buyCap;
 $('titleList').addEventListener('click',function(e){var b=e.target.closest('[data-t]');if(!b)return;var id=b.getAttribute('data-t');S.title=S.title===id?'':id;ttlKey='';sfx('coin');save();renderAll()});
 $('rangeSel').onchange=function(){S.range=this.value;S.lastIdx=-1;newQuestion();save();renderAll()};
 function focusTyped(){var i=$('typedIn');if(i){try{i.focus({preventScroll:true})}catch(x){}}}
-$('btnSkip').onclick=function(){if(busy)return;newQuestion();renderQuiz();focusTyped()};
+var SKIPBASE=5,SKIPBONUS=5,SKIPEVERY=10;
+function skipSt(){var t=today();if(!S.skip||S.skip.d!==t)S.skip={d:t,n:0,a:S.st.ans};return S.skip}
+function skipLeft(){var k=skipSt(),b=Math.min(SKIPBONUS,Math.floor(Math.max(0,S.st.ans-k.a)/SKIPEVERY));return SKIPBASE+b-k.n}
+function renderSkip(){var b=$('btnSkip');if(!b)return;var l=skipLeft();b.disabled=l<=0;b.textContent=l>0?'문제 바꾸기 · 오늘 '+l+'번 남음':'바꾸기 다 씀 · 10문제 맞히면 +1'}
+$('btnSkip').onclick=function(){if(busy||skipLeft()<=0)return;skipSt().n++;save();newQuestion();renderQuiz();focusTyped()};
 $('btnNext').onclick=function(){if(busy||studyLeft()>0)return;newQuestion();renderQuiz();focusTyped()};
 $('btnSfx').onclick=function(){S.sfx=!S.sfx;save();renderTop();if(S.sfx)sfx('coin')};
 $('btnBgm').onclick=function(){S.bgm=!S.bgm;save();renderTop();if(S.bgm)bgmStart();else bgmStop()};
@@ -2459,10 +2527,14 @@ $('btnReset').onclick=function(){
   if(rs===0){rs=1;b.textContent='정말 초기화할까요? 한 번 더 누르세요';rt=setTimeout(function(){rs=0;b.textContent='기록 초기화'},4000);return}
   clearTimeout(rt);rs=0;b.textContent='기록 초기화';S=defState();lastShown='';dexKey='';$('rangeSel').removeAttribute('data-n');newQuestion();save();renderAll();loadWords();openSetup();
 };
-var secretBuf='';
+var secretBuf='',secretLong='',OPM=false;
+function opHash(t){var v=5381;for(var i=0;i<t.length;i++)v=((v*33)^t.charCodeAt(i))>>>0;return v}
+(function(){var b=document.createElement('div');b.id='opBadge';b.hidden=true;b.textContent='🛠 운영자의 손길 · 성공 100%';document.body.appendChild(b)})();
+function opToggle(){OPM=!OPM;var b=document.getElementById('opBadge');if(b)b.hidden=!OPM;if(S.sfx)sfx('coin');addLog(OPM?'🛠 운영자의 손길: 강화 성공 확률이 100%가 됩니다. (페이지를 새로 열면 해제)':'🛠 운영자의 손길이 사라졌습니다.','g');renderAll()}
 document.addEventListener('keydown',function(e){
   if(e.target&&/^(TEXTAREA|INPUT)$/.test(e.target.tagName))return;
-  if(e.key&&e.key.length===1){secretBuf=(secretBuf+e.key.toLowerCase()).slice(-4);if(secretBuf==='meow'){catPreview=!catPreview;secretBuf='';if(S.sfx)meow();renderTop();catSay('냥!');addLog(catPreview?'🐱 어디선가 야옹 소리가 들려요... (미리보기)':'🐱 고양이가 돌아갔어요.','g')}}
+  if(e.key&&e.key.length===1){secretLong=(secretLong+e.key.toLowerCase()).slice(-17);var oh=opHash(secretLong);if(oh===4126199766||oh===347600022){secretLong='';opToggle()}secretBuf=(secretBuf+e.key.toLowerCase()).slice(-4);if(secretBuf==='meow'){catPreview=!catPreview;secretBuf='';if(S.sfx)meow();renderTop();catSay('냥!');addLog(catPreview?'🐱 어디선가 야옹 소리가 들려요... (미리보기)':'🐱 고양이가 돌아갔어요.','g')}}
+  if(Q&&Q.kind==='gram'&&!Q.done&&!busy&&$('intro').hidden&&$('award').hidden&&$('dlg').hidden&&!catchOpen()&&!bossOpenNow()&&$('dragon').hidden&&$('sboss').hidden){var gn=parseInt(e.key,10);if(gn>=1&&gn<=2)gramPick(gn-1);return}
   if(!Q||Q.kind==='order'||Q.kind==='match'||Q.kind==='tiles'||Q.typed||Q.done||busy||!$('intro').hidden||!$('award').hidden||!$('dlg').hidden||catchOpen()||bossOpenNow()||!$('dragon').hidden||!$('sboss').hidden)return;
   var n=parseInt(e.key,10);if(n>=1&&n<=Q.opts.length)answer(n-1);
 });
